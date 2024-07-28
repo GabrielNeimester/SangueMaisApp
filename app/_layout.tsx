@@ -1,5 +1,5 @@
 import { config } from '@gluestack-ui/config';
-import { GluestackUIProvider, Heading, Tabs } from '@gluestack-ui/themed';
+import { GluestackUIProvider, Heading } from '@gluestack-ui/themed';
 import { Slot } from 'expo-router';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import Svg, { Ellipse, Path } from 'react-native-svg';
