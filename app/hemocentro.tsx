@@ -3,19 +3,8 @@ import { Card, Heading, Spinner, Text } from '@gluestack-ui/themed'
 import { useEffect, useState } from "react";
 import { api } from "../config/api"
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
-import { useNavigation } from "expo-router"
-
-interface IHemocentro {
-    _id: string
-    cnpj: string
-    nome: string
-    estado: string
-    cidade: string
-    bairro: string
-    telefone: string
-    email: string
-    ativo: boolean
-}
+import { router, useNavigation } from "expo-router"
+import { IHemocentro } from "../interfaces/hemocentro";
 
 export default function Hemocentro() {
     const [hemocentro, setHemocentro] = useState<IHemocentro[]>([])
@@ -26,8 +15,8 @@ export default function Hemocentro() {
     const navigation = useNavigation()
 
     function handleHemocentroDetalhes(id: string): void {
-        navigation.navigate('hemocentroDetalhes', { id })
-    }
+        router.push({ pathname: 'hemocentroDetalhes', params: { id } });
+      }
 
     useEffect(() => {
         const fetchData = async () => {
