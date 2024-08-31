@@ -1,10 +1,10 @@
 import { ScrollView, StyleSheet, View, TextInput } from "react-native"
 import { Card, Heading, Spinner, Text } from '@gluestack-ui/themed'
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react"
 import { api } from "../config/api"
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import { router, useNavigation } from "expo-router"
-import { IHemocentro } from "../interfaces/hemocentro";
+import { IHemocentro } from "../interfaces/hemocentro"
 
 export default function Hemocentro() {
     const [hemocentro, setHemocentro] = useState<IHemocentro[]>([])
@@ -15,7 +15,7 @@ export default function Hemocentro() {
     const navigation = useNavigation()
 
     function handleHemocentroDetalhes(id: string): void {
-        router.push({ pathname: 'hemocentroDetalhes', params: { id } });
+        router.push({ pathname: 'hemocentroDetalhes', params: { id } })
       }
 
     useEffect(() => {
@@ -90,7 +90,7 @@ export default function Hemocentro() {
                     </Card>
                 ))
             )}
-            {error && <Text style={styles.error}>{error}</Text>}
+            {error && <Text sx={styles.error}>{error}</Text>}
         </ScrollView>
     );
 }
@@ -98,7 +98,7 @@ export default function Hemocentro() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#FFF4F4',
     },
     pesquisa: {
         height: 40,
@@ -122,6 +122,7 @@ const styles = StyleSheet.create({
         marginLeft: 16,
         marginRight: 16,
         marginBottom: 16,
+        backgroundColor: '#FFF4F4',
     },
     cidade: {
         display: 'flex',
@@ -143,19 +144,20 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginTop: 16,
     },
+    searchIcon: {
+        marginRight: 8,
+    },
     searchContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         borderColor: '#ccc',
+        backgroundColor: '#FFF',
         borderWidth: 1,
         borderRadius: 8,
         marginBottom: 16,
         marginLeft: 16,
         marginRight: 16,
         paddingLeft: 8
-    },
-    searchIcon: {
-        marginRight: 8,
     },
     searchInput: {
         flex: 1,
