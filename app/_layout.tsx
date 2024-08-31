@@ -1,7 +1,7 @@
 import { config } from '@gluestack-ui/config';
 import { GluestackUIProvider, Heading } from '@gluestack-ui/themed';
 import { Slot } from 'expo-router';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Svg, { Ellipse, Path } from 'react-native-svg';
 
 export default function Layout() {
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   },
   titulo:{
     fontSize: 24,
-    color:'#FFFFFF',
+    color:'#FFF4F4',
     padding: 4
   },
   logo:{
