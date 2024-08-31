@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { api } from "../config/api";
 import { router, useLocalSearchParams } from 'expo-router';
 import { IHemocentro } from "../interfaces/hemocentro";
+import HemocentroHeader from "../components/HemocentroHeader";
 
 export default function HemocentroDetalhes() {
     const { id } = useLocalSearchParams();
@@ -44,11 +45,7 @@ export default function HemocentroDetalhes() {
                 </View>
             ) : hemocentro ? (
                 <View style={styles.detailsContainer}>
-                    <Heading fontSize={24} style={styles.title}>{hemocentro.nome}</Heading>
-                    <Text fontSize={16}>{hemocentro.cnpj}</Text>
-                    <View style={styles.cidade}>
-                        <Text fontWeight={'700'} fontSize={16}>{hemocentro.cidade} - {hemocentro.estado}</Text>
-                    </View>
+                    <HemocentroHeader hemocentro={hemocentro}/>
                     <Heading>Contatos</Heading>
                     <Divider my="$1" bgColor="#000000" />
                     <View style={styles.contatos}>
@@ -60,7 +57,7 @@ export default function HemocentroDetalhes() {
                     </Button>
                 </View>
             ) : (
-                <Text style={styles.error}>{error ? error : "Hemocentro não encontrado"}</Text>
+                <Text sx={styles.error}>{error ? error : "Hemocentro não encontrado"}</Text>
             )}
         </ScrollView>
     );
@@ -69,14 +66,11 @@ export default function HemocentroDetalhes() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#FFF4F4',
         padding: 16,
     },
     detailsContainer: {
         flex: 1,
-    },
-    title: {
-        marginBottom: 8,
     },
     label: {
         fontWeight: 'bold',
@@ -98,11 +92,6 @@ const styles = StyleSheet.create({
         paddingTop: 16,
         paddingBottom: 16,
         height: 'auto'
-    },
-    cidade:{
-        display:'flex',
-        flexDirection:'row',
-        justifyContent: 'flex-end'
     },
     contatos:{
         marginTop:16,
