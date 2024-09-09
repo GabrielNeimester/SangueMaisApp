@@ -1,8 +1,8 @@
-import { config } from '@gluestack-ui/config';
-import { GluestackUIProvider, Heading } from '@gluestack-ui/themed';
-import { Slot } from 'expo-router';
-import { StyleSheet, View } from 'react-native';
-import Svg, { Ellipse, Path } from 'react-native-svg';
+import { config } from '@gluestack-ui/config'
+import { GluestackUIProvider, Heading } from '@gluestack-ui/themed'
+import { Slot } from 'expo-router'
+import { StyleSheet, View } from 'react-native'
+import Svg, { Ellipse, Path } from 'react-native-svg'
 
 export default function Layout() {
 
@@ -40,4 +40,4 @@ const styles = StyleSheet.create({
   logo:{
     padding: 4
   }
-});
+})
