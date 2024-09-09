@@ -1,15 +1,15 @@
-import { ScrollView, StyleSheet, View } from "react-native";
-import { Spinner, Text } from '@gluestack-ui/themed';
-import { useLocalSearchParams } from 'expo-router';
-import HemocentroHeader from "../components/HemocentroHeader";
-import Aviso from "../components/Aviso";
-import AgendamentoForm from "../components/AgendamentoForm";
+import { ScrollView, StyleSheet, View } from "react-native"
+import { Spinner, Text } from '@gluestack-ui/themed'
+import { useLocalSearchParams } from 'expo-router'
+import HemocentroHeader from "../components/HemocentroHeader"
+import Aviso from "../components/Aviso"
+import AgendamentoForm from "../components/AgendamentoForm"
 import { useAgendamentoData } from '../hooks/useAgendamentoData'
 
 export default function AgendamentoData() {
-    const { id } = useLocalSearchParams();
+    const { id } = useLocalSearchParams()
 
-    const hemocentroId = Array.isArray(id) ? id[0] : id;
+    const hemocentroId = Array.isArray(id) ? id[0] : id
 
     const {
         hemocentro,
@@ -24,7 +24,7 @@ export default function AgendamentoData() {
         handleDataChange,
         handleHorarioChange,
         handleResponderFormulario,
-    } = useAgendamentoData(hemocentroId);
+    } = useAgendamentoData(hemocentroId)
 
     return (
         <ScrollView style={styles.container}>
@@ -74,4 +74,4 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-});
+})
