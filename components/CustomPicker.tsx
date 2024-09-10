@@ -35,13 +35,12 @@ const CustomPicker: React.FC<CustomPickerProps> = ({ label, selectedValue, onVal
 const styles = StyleSheet.create({
     container: {
         marginBottom: 20,
-        marginHorizontal: 8,
     },
     label: {
         fontWeight: 'bold',
         fontSize: 16,
         color: '#000',
-        marginBottom: 8,
+        marginBottom: 2,
     },
     pickerContainer: {
         borderBottomWidth: 1,
@@ -54,6 +53,6 @@ const styles = StyleSheet.create({
     disabledPicker: {
         opacity: 0.5,
     },
-});
+})
 
-export default CustomPicker;
+export default CustomPicker
