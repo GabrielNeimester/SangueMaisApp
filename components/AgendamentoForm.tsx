@@ -1,7 +1,7 @@
 import { View, StyleSheet } from "react-native";
 import { Button, ButtonText, Divider, Heading, Text } from '@gluestack-ui/themed';
 import CustomPicker from "./CustomPicker";
-import { formatDate } from "../utils/formatDate";
+import { formatDate } from "../utils/formatUtils";
 import { IData } from "../interfaces/data";
 import { IHorario } from "../interfaces/hora";
 
@@ -14,6 +14,11 @@ interface AgendamentoFormProps {
     onDataChange: (data: string) => void;
     onHorarioChange: (horarioId: string) => void;
 }
+
+// Função auxiliar para converter a string de data em objeto Date
+const convertStringToDate = (dateString: string): Date => {
+    return new Date(dateString);
+};
 
 export default function AgendamentoForm({
     datas,
@@ -36,7 +41,7 @@ export default function AgendamentoForm({
                 selectedValue={selectedData}
                 onValueChange={onDataChange}
                 items={datas.map(dataItem => ({
-                    label: formatDate(dataItem.data),
+                    label: formatDate(convertStringToDate(dataItem.data)),
                     value: dataItem._id
                 }))}
                 placeholder={datas.length > 0 ? "Selecione uma data" : "Sem datas disponíveis"}
