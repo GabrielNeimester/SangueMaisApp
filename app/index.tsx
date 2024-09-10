@@ -23,7 +23,7 @@ export default function Home() {
       </View>
       <RedButton title="Agendar Doação" onPress={handleHemocentro} />
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({

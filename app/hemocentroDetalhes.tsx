@@ -1,21 +1,22 @@
-import { ScrollView, StyleSheet, View } from "react-native";
-import { Button, ButtonText, Divider, Heading, Spinner, Text } from '@gluestack-ui/themed';
-import { useEffect, useState } from "react";
-import { api } from "../config/api";
-import { router, useLocalSearchParams } from 'expo-router';
-import { IHemocentro } from "../interfaces/hemocentro";
-import HemocentroHeader from "../components/HemocentroHeader";
+import { ScrollView, StyleSheet, View } from "react-native"
+import { Button, ButtonText, Divider, Heading, Spinner, Text } from '@gluestack-ui/themed'
+import { useEffect, useState } from "react"
+import { api } from "../config/api"
+import { router, useLocalSearchParams } from 'expo-router'
+import { IHemocentro } from "../interfaces/hemocentro"
+import HemocentroHeader from "../components/HemocentroHeader"
 
 export default function HemocentroDetalhes() {
-    const { id } = useLocalSearchParams();
-    const [hemocentro, setHemocentro] = useState<IHemocentro | null>(null);
-    const [error, setError] = useState<string | null>(null);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const { id } = useLocalSearchParams()
+
+    const [hemocentro, setHemocentro] = useState<IHemocentro | null>(null)
+    const [error, setError] = useState<string | null>(null)
+    const [isLoading, setIsLoading] = useState<boolean>(false)
 
 
     function handleHemocentroData(id: string): void {
-        router.push({ pathname: 'agendamentoData', params: { id } });
-      }
+        router.push({ pathname: 'agendamentoData', params: { id } })
+    }
 
     useEffect(() => {
         const fetchHemocentro = async () => {
@@ -25,17 +26,17 @@ export default function HemocentroDetalhes() {
                 if (!response.ok) {
                     throw new Error(`Network response was not ok: ${response.statusText}`)
                 }
-                const data = await response.json();
+                const data = await response.json()
                 setHemocentro(data)
             } catch (err: any) {
                 setError(`Ops...Ocorreu um erro ao carregar a página...`)
             } finally {
                 setIsLoading(false)
             }
-        };
+        }
 
-        fetchHemocentro();
-    }, [id]);
+        fetchHemocentro()
+    }, [id])
 
     return (
         <ScrollView style={styles.container}>
@@ -60,7 +61,7 @@ export default function HemocentroDetalhes() {
                 <Text sx={styles.error}>{error ? error : "Hemocentro não encontrado"}</Text>
             )}
         </ScrollView>
-    );
+    )
 }
 
 const styles = StyleSheet.create({
@@ -97,5 +98,5 @@ const styles = StyleSheet.create({
         marginTop:16,
         marginBottom:32
     }
-});
+})
 
