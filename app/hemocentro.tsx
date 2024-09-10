@@ -92,7 +92,7 @@ export default function Hemocentro() {
             )}
             {error && <Text sx={styles.error}>{error}</Text>}
         </ScrollView>
-    );
+    )
 }
 
 const styles = StyleSheet.create({
@@ -166,4 +166,4 @@ const styles = StyleSheet.create({
     spinner: {
         margin: 16
     }
-});
+})
