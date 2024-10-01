@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"; 
+import React, { useEffect, useState } from "react";
 import { View, ScrollView, StyleSheet } from "react-native";
 import { Text, Spinner } from '@gluestack-ui/themed';
 import { useLocalSearchParams } from 'expo-router';
@@ -7,6 +7,8 @@ import QuestoesComponent from "../components/QuestoesComponent";
 import { fetchHemocentro, fetchQuestoes } from "../utils/apiUtils";
 import { IHemocentro } from "../interfaces/hemocentro";
 import { IQuestoesResponse } from "../interfaces/questoes";
+import ErrorComponent from "../components/ErrorComponent";
+import ErrorPage from "../components/ErrorPage";
 
 export default function FormularioHemocentro() {
     const { id, agendamento } = useLocalSearchParams();
@@ -14,21 +16,21 @@ export default function FormularioHemocentro() {
     const [hemocentro, setHemocentro] = useState<IHemocentro | null>(null);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(1);
     const [selectedAnswers, setSelectedAnswers] = useState<{ [key: string]: string }>({});
-    const [error, setError] = useState<string | null>(null);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [error, setError] = useState<boolean>(false);
+    const [isLoadingHemocentro, setIsLoadingHemocentro] = useState<boolean>(true);
+    const [isLoadingQuestoes, setIsLoadingQuestoes] = useState<boolean>(true);
 
     useEffect(() => {
         const loadHemocentro = async () => {
-            setIsLoading(true);
+            setIsLoadingHemocentro(true);
             try {
                 const data = await fetchHemocentro(id as string);
                 setHemocentro(data);
             } catch {
-                setError(`Ops...Ocorreu um erro ao carregar a página...`);
+                setError(true);
             } finally {
-                setIsLoading(false);
+                setIsLoadingHemocentro(false);
             }
-            console.log(agendamento)
         };
 
         loadHemocentro();
@@ -36,14 +38,14 @@ export default function FormularioHemocentro() {
 
     useEffect(() => {
         const loadQuestoes = async () => {
-            setIsLoading(true);
+            setIsLoadingQuestoes(true);
             try {
                 const data = await fetchQuestoes(id as string, currentQuestionIndex);
                 setQuestoes(data);
             } catch {
-                setError('Erro ao carregar as questões.');
+                setError(true);
             } finally {
-                setIsLoading(false);
+                setIsLoadingQuestoes(false);
             }
         };
 
@@ -65,27 +67,21 @@ export default function FormularioHemocentro() {
     const handleValueChange = (questaoId: string, value: string) => {
         setSelectedAnswers(prev => ({
             ...prev,
-            [questaoId]: value // Armazenar a resposta usando o ID da pergunta
+            [questaoId]: value
         }));
     };
 
     const handleFinish = () => {
-
         const agendamentoCompleto = {
             ...JSON.parse(agendamento as string),
             selectedAnswers
-        }
-
-        console.log(agendamentoCompleto)
+        };
+        console.log(agendamentoCompleto);
     };
-
-    const agendamentoRespostas = {
-        agendamento,
-    }
 
     return (
         <ScrollView style={styles.container}>
-            {isLoading ? (
+            {isLoadingHemocentro || isLoadingQuestoes ? (
                 <View style={styles.spinner}>
                     <Spinner size="large" />
                 </View>
@@ -94,7 +90,7 @@ export default function FormularioHemocentro() {
                     {hemocentro ? (
                         <HemocentroHeader hemocentro={hemocentro} />
                     ) : (
-                        <Text>Nenhum hemocentro encontrado.</Text>
+                        <Text></Text>
                     )}
                     {questoes ? (
                         <QuestoesComponent
@@ -102,12 +98,13 @@ export default function FormularioHemocentro() {
                             onNext={handleNext}
                             onPrevious={handlePrevious}
                             onFinish={handleFinish}
-                            onValueChange={handleValueChange} // Passar a função de mudança de valor
-                            selectedAnswers={selectedAnswers} // Passar respostas selecionadas
+                            onValueChange={handleValueChange}
+                            selectedAnswers={selectedAnswers}
                         />
                     ) : (
-                        <Text>Nenhuma questão disponível.</Text>
+                        <Text></Text>
                     )}
+                    {error && <ErrorPage />}
                 </View>
             )}
         </ScrollView>
@@ -127,5 +124,5 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-    },
+    }
 });

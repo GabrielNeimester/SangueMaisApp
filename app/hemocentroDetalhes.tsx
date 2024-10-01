@@ -5,12 +5,13 @@ import { api } from "../config/api"
 import { router, useLocalSearchParams } from 'expo-router'
 import { IHemocentro } from "../interfaces/hemocentro"
 import HemocentroHeader from "../components/HemocentroHeader"
+import ErrorComponent from "../components/ErrorComponent"
 
 export default function HemocentroDetalhes() {
     const { id } = useLocalSearchParams()
 
     const [hemocentro, setHemocentro] = useState<IHemocentro | null>(null)
-    const [error, setError] = useState<string | null>(null)
+    const [error, setError] = useState<boolean>(false)
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
 
@@ -29,7 +30,7 @@ export default function HemocentroDetalhes() {
                 const data = await response.json()
                 setHemocentro(data)
             } catch (err: any) {
-                setError(`Ops...Ocorreu um erro ao carregar a página...`)
+                setError(true)
             } finally {
                 setIsLoading(false)
             }
@@ -46,7 +47,7 @@ export default function HemocentroDetalhes() {
                 </View>
             ) : hemocentro ? (
                 <View style={styles.detailsContainer}>
-                    <HemocentroHeader hemocentro={hemocentro}/>
+                    <HemocentroHeader hemocentro={hemocentro} />
                     <Heading>Contatos</Heading>
                     <Divider my="$1" bgColor="#000000" />
                     <View style={styles.contatos}>
@@ -54,12 +55,15 @@ export default function HemocentroDetalhes() {
                         <Text fontSize={16}>{hemocentro.email}</Text>
                     </View>
                     <Button style={styles.button}>
-                        <ButtonText fontSize={24} onPress={ () => handleHemocentroData(hemocentro._id)}>Agendar Doação</ButtonText>
+                        <ButtonText fontSize={24} onPress={() => handleHemocentroData(hemocentro._id)}>Agendar Doação</ButtonText>
                     </Button>
                 </View>
             ) : (
-                <Text sx={styles.error}>{error ? error : "Hemocentro não encontrado"}</Text>
+                <View style={styles.spinner}>
+                    <Spinner size={'large'} />
+                </View>
             )}
+            {error && <ErrorComponent></ErrorComponent>}
         </ScrollView>
     )
 }
@@ -94,9 +98,9 @@ const styles = StyleSheet.create({
         paddingBottom: 16,
         height: 'auto'
     },
-    contatos:{
-        marginTop:16,
-        marginBottom:32
+    contatos: {
+        marginTop: 16,
+        marginBottom: 32
     }
 })
 

@@ -185,7 +185,7 @@ export default function FormularioFixo() {
             </View>
 
             <View style={styles.footer}>
-                <RedButton title="Próxima" onPress={handleFormularioHemcentro} />
+                <RedButton title="Próxima" onPress={handleFormularioHemcentro}/>
             </View>
             <Aviso
                 isOpen={isAvisoOpen}
@@ -246,4 +246,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: 16,
     },
+    button_margin:{
+        marginBottom: 16
+    }
 })

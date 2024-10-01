@@ -5,6 +5,7 @@ import HemocentroHeader from "../components/HemocentroHeader"
 import Aviso from "../components/Aviso"
 import AgendamentoForm from "../components/AgendamentoForm"
 import { useAgendamentoData } from '../hooks/useAgendamentoData'
+import ErrorComponent from "../components/ErrorPage"
 
 export default function AgendamentoData() {
     const { id } = useLocalSearchParams()
@@ -17,7 +18,6 @@ export default function AgendamentoData() {
         horarios,
         selectedData,
         selectedHorario,
-        error,
         isLoading,
         showAlertDialog,
         setShowAlertDialog,
@@ -46,9 +46,9 @@ export default function AgendamentoData() {
                     />
                 </View>
             ) : (
-                <Text color="red" textAlign="center" marginTop={16}>
-                    {error ? error : "Hemocentro não encontrado"}
-                </Text>
+                <View style={styles.spinner}>
+                    <Spinner size={'large'} />
+                </View>
             )}
             <Aviso
                 isOpen={showAlertDialog}

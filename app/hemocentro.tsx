@@ -5,14 +5,14 @@ import { api } from "../config/api"
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import { router, useNavigation } from "expo-router"
 import { IHemocentro } from "../interfaces/hemocentro"
+import ErrorComponent from "../components/ErrorComponent"
 
 export default function Hemocentro() {
     const [hemocentro, setHemocentro] = useState<IHemocentro[]>([])
     const [filteredHemocentro, setFilteredHemocentro] = useState<IHemocentro[]>([])
-    const [error, setError] = useState<string | null>(null)
+    const [error, setError] = useState<boolean | false>(false)
     const [isLoading, setIsLoading] = useState<boolean | false>(false)
     const [searchQuery, setSearchQuery] = useState<string>("")
-    const navigation = useNavigation()
 
     function handleHemocentroDetalhes(id: string): void {
         router.push({ pathname: 'hemocentroDetalhes', params: { id } })
@@ -24,14 +24,13 @@ export default function Hemocentro() {
             try {
                 const response = await fetch(`${api}/hemocentro`)
                 if (!response.ok) {
-                    throw new Error(`Network response was not ok: ${response.statusText}`)
+                    setError(true)
                 }
                 const json = await response.json()
                 setHemocentro(json)
                 setFilteredHemocentro(json)
             } catch (err: any) {
-                console.error('Fetch error:', err)
-                setError(`Failed to fetch data: ${err.message}`)
+                setError(true)
             } finally {
                 setIsLoading(false)
             }
@@ -90,7 +89,7 @@ export default function Hemocentro() {
                     </Card>
                 ))
             )}
-            {error && <Text sx={styles.error}>{error}</Text>}
+            {error && <ErrorComponent></ErrorComponent>}
         </ScrollView>
     )
 }

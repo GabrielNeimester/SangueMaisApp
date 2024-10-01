@@ -23,5 +23,6 @@ const styles = StyleSheet.create({
         paddingTop: 16,
         paddingBottom: 16,
         height: 'auto',
+        marginBottom: 32
     },
 });
