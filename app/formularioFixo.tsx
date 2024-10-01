@@ -24,6 +24,19 @@ export default function FormularioFixo() {
 
     const { id, agendamento } = useLocalSearchParams()
 
+    const validarIdade = (idade: Date) => {
+        const dataAtual = new Date();
+        const age = dataAtual.getFullYear() - idade.getFullYear();
+        const diferencaMes = dataAtual.getMonth() -idade.getMonth();
+    
+
+        if (diferencaMes < 0 || (diferencaMes === 0 && dataAtual.getDate() <idade.getDate())) {
+            return age - 1;
+        }
+    
+        return age;
+    }
+
     const validateForm = () => {
         const camposVazios = []
 
@@ -34,6 +47,13 @@ export default function FormularioFixo() {
 
         if (camposVazios.length > 0) {
             setAvisoMessage(`Por favor, preencha os seguintes campos obrigatórios: ${camposVazios.join(', ')}.`)
+            setIsAvisoOpen(true)
+            return false
+        }
+
+        const idadeUsuario = validarIdade(dataNascimento);
+        if (idadeUsuario < 16) {
+            setAvisoMessage('Você deve ter pelo menos 16 anos para se cadastrar.')
             setIsAvisoOpen(true)
             return false
         }

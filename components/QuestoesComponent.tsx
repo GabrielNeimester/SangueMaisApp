@@ -8,9 +8,9 @@ interface QuestoesComponentProps {
     questoes: IQuestoesResponse;
     onNext: () => void;
     onPrevious: () => void;
-    onFinish: (answers: { [key: string]: string }) => void; // Passa as respostas ao finalizar
-    onValueChange: (questaoId: string, value: string) => void; // Nova prop para mudar o valor
-    selectedAnswers: { [key: string]: string }; // Nova prop para respostas selecionadas
+    onFinish: (answers: { [key: string]: string }) => void; 
+    onValueChange: (questaoId: string, value: string) => void; 
+    selectedAnswers: { [key: string]: string };
 }
 
 

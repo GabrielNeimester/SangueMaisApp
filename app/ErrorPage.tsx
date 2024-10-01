@@ -18,10 +18,10 @@ export default function ErrorPage() {
                 <Icon name="sentiment-dissatisfied" size={160} color="#E31515" />
                 <Text fontSize={20} style={styles.text}>Por favor aperte o botão abaixo para retornar a página inicial</Text>
             </View>
-            <TouchableOpacity style={styles.button_primary}
-                onPress={handleHome} >
-                <Text style={styles.text_primary} fontSize={24}>Voltar para o início</Text>
-            </TouchableOpacity>
+                <TouchableOpacity style={styles.button_primary}
+                    onPress={handleHome} >
+                    <Text style={styles.text_primary} fontSize={24}>Voltar para o início</Text>
+                </TouchableOpacity>
         </View>
     );
 }
@@ -48,7 +48,6 @@ const styles = StyleSheet.create({
         marginTop: 16
     },
     button_primary: {
-        display: 'flex',
         backgroundColor: '#E31515',
         paddingLeft: 56,
         paddingRight: 56,
@@ -57,7 +56,6 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         alignItems: 'center',
         justifyContent: 'center',
-        flex: 1,
         marginTop: 32
     },
     text_primary: {

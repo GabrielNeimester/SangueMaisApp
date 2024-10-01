@@ -5,7 +5,7 @@ import HemocentroHeader from "../components/HemocentroHeader"
 import Aviso from "../components/Aviso"
 import AgendamentoForm from "../components/AgendamentoForm"
 import { useAgendamentoData } from '../hooks/useAgendamentoData'
-import ErrorComponent from "../components/ErrorPage"
+import ErrorComponent from "./ErrorPage"
 
 export default function AgendamentoData() {
     const { id } = useLocalSearchParams()

@@ -1,4 +1,5 @@
 import { api } from "../config/api";
+import { IAgendamentoResponse } from "../interfaces/agendamento";
 
 export const fetchHemocentro = async (id: string) => {
     const response = await fetch(`${api}/hemocentro/hemocentroShow/${id}`);
@@ -12,21 +13,18 @@ export const fetchQuestoes = async (id: string, page: number) => {
     const response = await fetch(`${api}/questoes/getForm/${id}?page=${page}`);
 
     if (!response.ok) {
-        throw new Error('Erro ao buscar as questões');
+        throw new Error('Erro ao buscar as questões')
     }
 
-    // Aguarde a resolução da Promise e obtenha os dados
-    const data = await response.json();
+    const data = await response.json()
 
-    // Verifique se os dados possuem a estrutura correta
-    // Aqui, em vez de data.questoes, você usará o próprio data, que contém os detalhes da questão
-    if (!data || !data.id || !data.descricao || !Array.isArray(data.opcoes)) {
-        throw new Error('Estrutura inesperada de dados');
+
+    if (!data || typeof data.totalQuestoesComOpcoes !== 'number') {
+        throw new Error('Estrutura inesperada de dados')
     }
-    
-    // Retorne os dados, caso a estrutura esteja correta
-    return data; 
-};
+
+    return data
+}
 
 
 export const fetchOpcoes = async (questaoId: string) => {
@@ -36,3 +34,58 @@ export const fetchOpcoes = async (questaoId: string) => {
     }
     return response.json()
 }
+
+
+export const createAgendamento = async (agendamento: string) => {
+    console.log('Dados enviados:', agendamento);
+
+    const response = await fetch(`${api}/agendamento/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(agendamento),
+    });
+
+    if (!response.ok) {
+        throw new Error(`Erro ao criar agendamento: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+
+    if (data.impedimento === 'temporario' && data.statusDoacao === 'bloqueado') {
+        const impedimento = 'nenhum'
+        const statusDoacao = 'liberado'
+        const diasImpedidos = Number(data.diasImpedidos)
+        const dataAgendamento = String(data.dataAgendamento)
+        const horario = String(data.horario)
+        return { impedimento, statusDoacao, diasImpedidos, dataAgendamento, horario}
+    }
+    if (data.impedimento === 'definitivo' && data.statusDoacao === 'bloqueado') {
+        const impedimento = 'nenhum'
+        const statusDoacao = 'liberado'
+        const diasImpedidos = 0
+        const dataAgendamento = String(data.dataAgendamento)
+        const horario = String(data.horario)
+        return { impedimento, statusDoacao, diasImpedidos, dataAgendamento, horario}
+    }
+
+    if (data.impedimento === 'nenhum' && data.statusDoacao === 'liberado') {
+        const impedimento = 'nenhum'
+        const statusDoacao = 'liberado'
+        const diasImpedidos = 0
+        const dataAgend = String(data.dataAgendamento)
+
+        const formatDate = (dataAgendamento:string) => {
+            const date = new Date(dataAgendamento);
+            return new Intl.DateTimeFormat('pt-BR').format(date); // pt-BR para formato brasileiro
+        };
+    
+        const dataAgendamento = formatDate(dataAgend)
+        const horario = String(data.horario)
+        return { impedimento, statusDoacao, diasImpedidos, dataAgendamento, horario}
+    }
+
+
+    return data
+};

@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { View, ScrollView, StyleSheet } from "react-native";
+import { View, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
 import { Text, Spinner } from '@gluestack-ui/themed';
-import { useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import HemocentroHeader from "../components/HemocentroHeader";
 import QuestoesComponent from "../components/QuestoesComponent";
-import { fetchHemocentro, fetchQuestoes } from "../utils/apiUtils";
+import { createAgendamento, fetchHemocentro, fetchQuestoes } from "../utils/apiUtils";
 import { IHemocentro } from "../interfaces/hemocentro";
 import { IQuestoesResponse } from "../interfaces/questoes";
 import ErrorComponent from "../components/ErrorComponent";
-import ErrorPage from "../components/ErrorPage";
+import ErrorPage from "./ErrorPage";
+import { IAgendamentoResponse } from "../interfaces/agendamento";
+import { api } from "../config/api";
 
 export default function FormularioHemocentro() {
     const { id, agendamento } = useLocalSearchParams();
@@ -71,13 +73,69 @@ export default function FormularioHemocentro() {
         }));
     };
 
-    const handleFinish = () => {
+    const handleFinishForm = async () => {
         const agendamentoCompleto = {
             ...JSON.parse(agendamento as string),
             selectedAnswers
         };
-        console.log(agendamentoCompleto);
-    };
+
+        try {
+            const {statusDoacao, impedimento, diasImpedidos, dataAgendamento, horario} = await createAgendamento(agendamentoCompleto)
+
+            router.push({
+                pathname: '/agendamentoResultado',
+                params: {statusDoacao, impedimento, diasImpedidos, dataAgendamento, horario}
+            });
+        } catch (error) {
+
+            router.push('/ErrorPage');
+        }
+    }
+
+    const handleFinish = async () => {
+        const agendamentoCompleto = {
+            ...JSON.parse(agendamento as string)
+        }
+        
+        console.log(agendamentoCompleto)
+        try {
+            const response = await createAgendamento(agendamentoCompleto)
+
+            const {
+                _id,
+                hemocentroId,
+                nomeCompleto,
+                dataAgendamento,
+                dataNascimento,
+                horario,
+                email,
+                impedimento,
+                diasImpedidos,
+                statusDoacao
+            } = response
+
+            router.push({
+                pathname: '/agendamentoResultado',
+                 params: {
+                    id: _id,
+                    hemocentroId,
+                    nomeCompleto,
+                    dataAgendamento,
+                    dataNascimento,
+                    horario,
+                    email,
+                    impedimento,
+                    diasImpedidos,
+                    statusDoacao
+                }
+            });
+        } catch (error) {
+            console.error('Erro ao criar o agendamento:', error);
+            router.push('/ErrorPage');
+        }
+    }
+
+
 
     return (
         <ScrollView style={styles.container}>
@@ -92,12 +150,21 @@ export default function FormularioHemocentro() {
                     ) : (
                         <Text></Text>
                     )}
-                    {questoes ? (
+                    {questoes && questoes.totalQuestoesComOpcoes === 0 ? (
+                        <View>
+                            <Text  fontSize={20} style={styles.text} color="#E31515">Esse hemocentro ainda não tem nenhum formulário cadastrado, para concluir o agendamento aperte o botão abaixo</Text>
+                    <TouchableOpacity
+                        style={styles.button_primary}
+                        onPress={handleFinish}>
+                        <Text style={styles.text_primary} fontSize={24}>Finalizar</Text>
+                    </TouchableOpacity>
+                        </View>
+                    ) : questoes ? (
                         <QuestoesComponent
                             questoes={questoes}
                             onNext={handleNext}
                             onPrevious={handlePrevious}
-                            onFinish={handleFinish}
+                            onFinish={handleFinishForm}
                             onValueChange={handleValueChange}
                             selectedAnswers={selectedAnswers}
                         />
@@ -124,5 +191,28 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    button_primary: {
+        display: 'flex',
+        backgroundColor: '#E31515',
+        paddingLeft: 56,
+        paddingRight: 56,
+        paddingTop: 16,
+        paddingBottom: 16,
+        borderRadius: 8,
+        alignItems: 'center',
+        justifyContent: 'center',
+        flex: 1,
+        marginTop: 8
+    },
+    text_primary: {
+        color: '#FFFFFF',
+        fontWeight: 'bold'
+    },
+    text: {
+        fontWeight: 'bold',
+        textAlign: 'center',
+        marginTop: 16,
+        marginBottom: 32
     }
 });

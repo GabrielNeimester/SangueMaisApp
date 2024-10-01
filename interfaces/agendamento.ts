@@ -10,3 +10,16 @@ export interface IAgendamento{
     telefone: string,
     email: string
   }
+
+export interface IAgendamentoResponse{
+  _id: string,
+  hemocentroId: string,
+  nomeCompleto: string,
+  dataAgendamento: string,
+  dataNascimento: string,
+  horario: string,
+  email: string,
+  impedimento: string,
+  diasImpedidos: string,
+  statusDoacao: string,
+}
