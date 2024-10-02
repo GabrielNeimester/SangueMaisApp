@@ -97,7 +97,6 @@ export default function FormularioHemocentro() {
             ...JSON.parse(agendamento as string)
         }
         
-        console.log(agendamentoCompleto)
         try {
             const response = await createAgendamento(agendamentoCompleto)
 

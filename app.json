@@ -6,7 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "scheme":"sangue-mais-app",
+    "scheme": "sangue-mais-app",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -19,13 +19,19 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.gnrodrigues.SangueMaisApp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
       "expo-router"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "cffe6de2-a9d0-4d8a-8a01-ea7c27d70c95"
+      }
+    }
   }
 }

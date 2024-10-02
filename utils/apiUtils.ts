@@ -37,7 +37,6 @@ export const fetchOpcoes = async (questaoId: string) => {
 
 
 export const createAgendamento = async (agendamento: string) => {
-    console.log('Dados enviados:', agendamento);
 
     const response = await fetch(`${api}/agendamento/`, {
         method: 'POST',
@@ -54,16 +53,16 @@ export const createAgendamento = async (agendamento: string) => {
     const data = await response.json();
 
     if (data.impedimento === 'temporario' && data.statusDoacao === 'bloqueado') {
-        const impedimento = 'nenhum'
-        const statusDoacao = 'liberado'
+        const impedimento = 'temporario'
+        const statusDoacao = 'bloqueado'
         const diasImpedidos = Number(data.diasImpedidos)
         const dataAgendamento = String(data.dataAgendamento)
         const horario = String(data.horario)
         return { impedimento, statusDoacao, diasImpedidos, dataAgendamento, horario}
     }
     if (data.impedimento === 'definitivo' && data.statusDoacao === 'bloqueado') {
-        const impedimento = 'nenhum'
-        const statusDoacao = 'liberado'
+        const impedimento = 'definitivo'
+        const statusDoacao = 'bloqueado'
         const diasImpedidos = 0
         const dataAgendamento = String(data.dataAgendamento)
         const horario = String(data.horario)
@@ -78,7 +77,7 @@ export const createAgendamento = async (agendamento: string) => {
 
         const formatDate = (dataAgendamento:string) => {
             const date = new Date(dataAgendamento);
-            return new Intl.DateTimeFormat('pt-BR').format(date); // pt-BR para formato brasileiro
+            return new Intl.DateTimeFormat('pt-BR').format(date)
         };
     
         const dataAgendamento = formatDate(dataAgend)
