@@ -13,8 +13,6 @@ interface QuestoesComponentProps {
     selectedAnswers: { [key: string]: string };
 }
 
-
-
 export default function QuestoesComponent({
     questoes,
     onNext,
@@ -25,8 +23,8 @@ export default function QuestoesComponent({
 }: QuestoesComponentProps) {
     return (
         <ScrollView>
-            <Text fontWeight="bold" fontSize={16}>{`Questão ${questoes.page}`}</Text>
-            <Text fontSize={24} style={styles.question}>{questoes.descricao}</Text>
+            <Text style={styles.title}>{`Questão ${questoes.page}`}</Text>
+            <Text style={styles.question}>{questoes.descricao}</Text>
             <RadioGroup
                 value={selectedAnswers[questoes.id] || ''} // Use a resposta armazenada ou uma string vazia
                 onChange={(value) => onValueChange(questoes.id, value)} // Passar o ID da questão
@@ -52,14 +50,14 @@ export default function QuestoesComponent({
                 {questoes.page < questoes.totalQuestoesComOpcoes ? (
                     <TouchableOpacity style={styles.button_primary}
                         onPress={onNext}
-                        disabled={!selectedAnswers[questoes.id]} // Habilitar apenas se uma opção estiver selecionada
+                        disabled={!selectedAnswers[questoes.id]}
                     >
                         <Text style={styles.text_primary} fontSize={24}>Próximo</Text>
                     </TouchableOpacity>
                 ) : (
                     <TouchableOpacity
                         style={styles.button_primary}
-                        onPress={() => onFinish(selectedAnswers)} // Passar as respostas ao finalizar
+                        onPress={() => onFinish(selectedAnswers)}
                         disabled={!selectedAnswers[questoes.id]} >
                         <Text style={styles.text_primary} fontSize={24}>Finalizar</Text>
                     </TouchableOpacity>
@@ -107,11 +105,20 @@ const styles = StyleSheet.create({
     },
     options: {
         marginTop: 4,
-        marginBottom: 4
+        marginBottom: 4,
+        fontSize: 18,
+        color: '#000'
     },
     question:{
         marginTop: 16,
-        marginBottom: 8
+        marginBottom: 16,
+        fontSize: 18,
+        color: '#000'
+    },
+    title:{
+        fontSize: 18,
+        color: '#000',
+        fontWeight: 'bold'
     }
 });
 

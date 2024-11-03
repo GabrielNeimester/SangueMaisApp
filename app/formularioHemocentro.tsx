@@ -7,10 +7,7 @@ import QuestoesComponent from "../components/QuestoesComponent";
 import { createAgendamento, fetchHemocentro, fetchQuestoes } from "../utils/apiUtils";
 import { IHemocentro } from "../interfaces/hemocentro";
 import { IQuestoesResponse } from "../interfaces/questoes";
-import ErrorComponent from "../components/ErrorComponent";
 import ErrorPage from "./ErrorPage";
-import { IAgendamentoResponse } from "../interfaces/agendamento";
-import { api } from "../config/api";
 
 export default function FormularioHemocentro() {
     const { id, agendamento } = useLocalSearchParams();
@@ -55,7 +52,7 @@ export default function FormularioHemocentro() {
     }, [id, currentQuestionIndex]);
 
     const handleNext = () => {
-        if (currentQuestionIndex < questoes.totalQuestoesComOpcoes) {
+        if (questoes?.totalQuestoesComOpcoes && currentQuestionIndex < questoes.totalQuestoesComOpcoes) {
             setCurrentQuestionIndex(currentQuestionIndex + 1);
         }
     };
@@ -115,7 +112,7 @@ export default function FormularioHemocentro() {
 
             router.push({
                 pathname: '/agendamentoResultado',
-                 params: {
+                params: {
                     id: _id,
                     hemocentroId,
                     nomeCompleto,
@@ -212,6 +209,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
         marginTop: 16,
-        marginBottom: 32
+        marginBottom: 32,
+        fontSize: 18
     }
 });
